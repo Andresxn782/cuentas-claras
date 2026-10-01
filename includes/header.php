@@ -9,9 +9,16 @@
 <body>
     <header class="cabecera">
         <a href="index.php" class="logo">Cuentas Claras</a>
-        <nav class="menu">
-            <a href="index.php">Panel</a>
-            <a href="movimientos.php">Movimientos</a>
+                <nav class="menu">
+            <?php if (usuario_logueado()): ?>
+                <span class="saludo">Hola, <?php echo escapar($_SESSION['usuario_nombre']); ?></span>
+                <a href="index.php">Panel</a>
+                <a href="movimientos.php">Movimientos</a>
+                <a href="logout.php">Cerrar sesión</a>
+            <?php else: ?>
+                <a href="login.php">Iniciar sesión</a>
+                <a href="registro.php">Crear cuenta</a>
+            <?php endif; ?>
         </nav>
     </header>
     <main class="contenedor">

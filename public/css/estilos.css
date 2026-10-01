@@ -43,3 +43,58 @@ body {
   padding: 20px;
   color: #777;
 }
+.tarjeta {
+  max-width: 450px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formulario label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.formulario input,
+.formulario select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.boton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #1e6f5c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.boton:hover {
+  background-color: #155446;
+}
+
+.alerta {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.alerta-error {
+  background-color: #fdecea;
+  color: #a12622;
+}
+
+.alerta-exito {
+  background-color: #e6f4ea;
+  color: #1e6f3c;
+}

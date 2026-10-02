@@ -14,7 +14,10 @@
                 <span class="saludo">Hola, <?php echo escapar($_SESSION['usuario_nombre']); ?></span>
                 <a href="index.php">Panel</a>
                 <a href="movimientos.php">Movimientos</a>
-                <a href="logout.php">Cerrar sesión</a>
+                <form method="post" action="logout.php" class="form-logout">
+                    <?php echo campo_csrf(); ?>
+                    <button type="submit" class="boton-enlace">Cerrar sesión</button>
+                </form>
             <?php else: ?>
                 <a href="login.php">Iniciar sesión</a>
                 <a href="registro.php">Crear cuenta</a>

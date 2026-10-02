@@ -23,3 +23,25 @@ function requerir_login() {
         exit;
     }
 }
+// Devuelve el token CSRF de la sesión (lo crea si no existe)
+function token_csrf() {
+    if (empty($_SESSION['token_csrf'])) {
+        $_SESSION['token_csrf'] = bin2hex(random_bytes(32));
+    }
+    return $_SESSION['token_csrf'];
+}
+
+// Devuelve el campo oculto con el token, para ponerlo dentro de cada formulario
+function campo_csrf() {
+    return '<input type="hidden" name="token_csrf" value="' . token_csrf() . '">';
+}
+
+// Comprueba que el token enviado coincide con el de la sesión. Si no, para todo.
+function comprobar_csrf() {
+    $token = $_POST['token_csrf'] ?? '';
+
+    if (!hash_equals(token_csrf(), $token)) {
+        http_response_code(403);
+        die('La solicitud no es válida. Recarga la página e inténtalo de nuevo.');
+    }
+}

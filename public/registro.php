@@ -14,6 +14,7 @@ $email = '';
 
 // Solo procesamos los datos si se ha enviado el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    comprobar_csrf();
 
     // 1. Recoger los datos
     $nombre    = trim($_POST['nombre'] ?? '');
@@ -78,6 +79,7 @@ require '../includes/header.php';
     <?php endif; ?>
 
     <form method="post" action="registro.php" class="formulario">
+         <?php echo campo_csrf(); ?>
         <label for="nombre">Nombre</label>
         <input type="text" id="nombre" name="nombre" maxlength="100" required
                value="<?php echo escapar($nombre); ?>">

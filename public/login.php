@@ -12,6 +12,7 @@ $error = '';
 $email = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  comprobar_csrf();
     $email    = strtolower(trim($_POST['email'] ?? ''));
     $password = $_POST['password'] ?? '';
 
@@ -54,6 +55,7 @@ require '../includes/header.php';
     <?php endif; ?>
 
     <form method="post" action="login.php" class="formulario">
+      <?php echo campo_csrf(); ?>
         <label for="email">Email</label>
         <input type="email" id="email" name="email" required
                value="<?php echo escapar($email); ?>">

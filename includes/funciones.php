@@ -15,3 +15,11 @@ function escapar($texto) {
 function usuario_logueado() {
     return isset($_SESSION['usuario_id']);
 }
+
+// Si no hay sesión iniciada, manda al usuario al login
+function requerir_login() {
+    if (!usuario_logueado()) {
+        header('Location: login.php');
+        exit;
+    }
+}

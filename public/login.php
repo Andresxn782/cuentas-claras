@@ -45,6 +45,10 @@ require '../includes/header.php';
         <div class="alerta alerta-exito">Cuenta creada correctamente. Ya puedes iniciar sesión.</div>
     <?php endif; ?>
 
+    <?php if (isset($_GET['salir'])): ?>
+        <div class="alerta alerta-exito">Has cerrado sesión correctamente.</div>
+    <?php endif; ?>
+
     <?php if ($error !== ''): ?>
         <div class="alerta alerta-error"><?php echo escapar($error); ?></div>
     <?php endif; ?>

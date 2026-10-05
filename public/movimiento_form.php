@@ -6,11 +6,38 @@ requerir_login();
 
 $errores = [];
 
+// NUEVO: si llega un id por la URL, estamos editando
+$id = (int) ($_GET['id'] ?? 0);
+$editando = $id > 0;
+
 // Valores por defecto del formulario
 $fecha        = date('Y-m-d');
 $categoria_id = 0;
 $importe      = '';
 $descripcion  = '';
+
+// NUEVO: si estamos editando, cargamos el movimiento (solo si es del usuario)
+if ($editando) {
+    $consulta = $pdo->prepare(
+        'SELECT fecha, categoria_id, importe, descripcion
+         FROM movimientos
+         WHERE id = ? AND usuario_id = ?'
+    );
+    $consulta->execute([$id, $_SESSION['usuario_id']]);
+    $movimiento = $consulta->fetch();
+
+    // No existe o es de otro usuario: lo mandamos al listado
+    if (!$movimiento) {
+        header('Location: movimientos.php');
+        exit;
+    }
+
+    // Rellenamos el formulario con sus datos
+    $fecha        = $movimiento['fecha'];
+    $categoria_id = $movimiento['categoria_id'];
+    $importe      = $movimiento['importe'];
+    $descripcion  = $movimiento['descripcion'];
+}
 
 // Cargamos las categorías para el desplegable
 $categorias = $pdo->query('SELECT id, nombre, tipo FROM categorias ORDER BY nombre')->fetchAll();
@@ -51,23 +78,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // 6. Si todo está bien, guardar
     if (empty($errores)) {
-        $consulta = $pdo->prepare(
-            'INSERT INTO movimientos (usuario_id, categoria_id, importe, fecha, descripcion)
-             VALUES (?, ?, ?, ?, ?)'
-        );
-        $consulta->execute([$_SESSION['usuario_id'], $categoria_id, $importe, $fecha, $descripcion]);
+        if ($editando) {
+            // NUEVO: actualizar (otra vez comprobando que es del usuario)
+            $consulta = $pdo->prepare(
+                'UPDATE movimientos
+                 SET categoria_id = ?, importe = ?, fecha = ?, descripcion = ?
+                 WHERE id = ? AND usuario_id = ?'
+            );
+            $consulta->execute([$categoria_id, $importe, $fecha, $descripcion, $id, $_SESSION['usuario_id']]);
 
-        header('Location: movimientos.php?creado=1');
+            header('Location: movimientos.php?editado=1');
+        } else {
+            $consulta = $pdo->prepare(
+                'INSERT INTO movimientos (usuario_id, categoria_id, importe, fecha, descripcion)
+                 VALUES (?, ?, ?, ?, ?)'
+            );
+            $consulta->execute([$_SESSION['usuario_id'], $categoria_id, $importe, $fecha, $descripcion]);
+
+            header('Location: movimientos.php?creado=1');
+        }
         exit;
     }
 }
 
-$titulo = 'Nuevo movimiento';
+// NUEVO: el título cambia según si creamos o editamos
+if ($editando) {
+    $titulo = 'Editar movimiento';
+} else {
+    $titulo = 'Nuevo movimiento';
+}
+
 require '../includes/header.php';
 ?>
 
 <div class="tarjeta">
-    <h1>Nuevo movimiento</h1>
+    <h1><?php echo escapar($titulo); ?></h1>
 
     <?php if (!empty($errores)): ?>
         <div class="alerta alerta-error">
@@ -79,7 +124,8 @@ require '../includes/header.php';
         </div>
     <?php endif; ?>
 
-    <form method="post" action="movimiento_form.php" class="formulario">
+    <!-- NUEVO: si editamos, el formulario se envía con el id en la URL -->
+    <form method="post" action="movimiento_form.php<?php if ($editando) echo '?id=' . $id; ?>" class="formulario">
         <?php echo campo_csrf(); ?>
 
         <label for="fecha">Fecha</label>

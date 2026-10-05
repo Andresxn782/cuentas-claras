@@ -28,6 +28,10 @@ require '../includes/header.php';
     <div class="alerta alerta-exito">Movimiento creado correctamente.</div>
 <?php endif; ?>
 
+<?php if (isset($_GET['editado'])): ?>
+    <div class="alerta alerta-exito">Movimiento actualizado correctamente.</div>
+<?php endif; ?>
+
 <?php if (empty($movimientos)): ?>
     <p>Todavía no tienes movimientos. ¡Añade el primero!</p>
 <?php else: ?>

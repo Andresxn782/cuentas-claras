@@ -115,3 +115,53 @@ body {
   font: inherit;
   cursor: pointer;
 }
+.cabecera-seccion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cabecera-seccion .boton {
+  margin-top: 0;
+  text-decoration: none;
+}
+
+.tabla-contenedor {
+  overflow-x: auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tabla th,
+.tabla td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+}
+
+.tabla th {
+  background-color: #f0f2f4;
+}
+
+.tabla .importe {
+  text-align: right;
+}
+
+.importe-ingreso {
+  color: #1e6f3c;
+  font-weight: bold;
+}
+
+.importe-gasto {
+  color: #a12622;
+  font-weight: bold;
+}

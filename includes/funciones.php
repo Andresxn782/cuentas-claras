@@ -45,3 +45,12 @@ function comprobar_csrf() {
         die('La solicitud no es válida. Recarga la página e inténtalo de nuevo.');
     }
 }
+// Convierte 1234.5 en "1.234,50 €"
+function formatear_euros($cantidad) {
+    return number_format((float) $cantidad, 2, ',', '.') . ' €';
+}
+
+// Convierte "2026-10-05" en "05/10/2026"
+function formatear_fecha($fecha) {
+    return date('d/m/Y', strtotime($fecha));
+}

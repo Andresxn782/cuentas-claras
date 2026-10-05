@@ -32,6 +32,10 @@ require '../includes/header.php';
     <div class="alerta alerta-exito">Movimiento actualizado correctamente.</div>
 <?php endif; ?>
 
+<?php if (isset($_GET['borrado'])): ?>
+    <div class="alerta alerta-exito">Movimiento borrado correctamente.</div>
+<?php endif; ?>
+
 <?php if (empty($movimientos)): ?>
     <p>Todavía no tienes movimientos. ¡Añade el primero!</p>
 <?php else: ?>
@@ -59,8 +63,14 @@ require '../includes/header.php';
                             <td class="importe importe-gasto">-<?php echo formatear_euros($movimiento['importe']); ?></td>
                         <?php endif; ?>
 
-                        <td>
+                        <td class="acciones">
                             <a href="movimiento_form.php?id=<?php echo $movimiento['id']; ?>">Editar</a>
+
+                              <form method="post" action="movimiento_borrar.php" class="form-borrar">
+                                <?php echo campo_csrf(); ?>
+                                <input type="hidden" name="id" value="<?php echo $movimiento['id']; ?>">
+                                <button type="submit" class="boton-borrar">Borrar</button>
+                            </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -68,5 +78,16 @@ require '../includes/header.php';
         </table>
     </div>
 <?php endif; ?>
+
+<dialog id="dialogo-borrar" class="dialogo">
+    <h2>¿Borrar movimiento?</h2>
+    <p>Esta acción no se puede deshacer.</p>
+    <div class="dialogo-botones">
+        <button type="button" id="cancelar-borrar" class="boton boton-secundario">Cancelar</button>
+        <button type="button" id="confirmar-borrar" class="boton boton-peligro">Sí, borrar</button>
+    </div>
+</dialog>
+
+<script src="js/confirmar-borrado.js"></script>
 
 <?php require '../includes/footer.php'; ?>

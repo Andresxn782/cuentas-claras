@@ -165,3 +165,66 @@ body {
   color: #a12622;
   font-weight: bold;
 }
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.acciones a {
+  color: #1e6f5c;
+}
+
+.boton-borrar {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #a12622;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.dialogo {
+  border: none;
+  border-radius: 8px;
+  padding: 25px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dialogo::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialogo h2 {
+  margin-top: 0;
+}
+
+.dialogo-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dialogo-botones .boton {
+  margin-top: 0;
+}
+
+.boton-secundario {
+  background-color: #e0e4e8;
+  color: #222;
+}
+
+.boton-secundario:hover {
+  background-color: #cfd4d9;
+}
+
+.boton-peligro {
+  background-color: #a12622;
+}
+
+.boton-peligro:hover {
+  background-color: #7f1d1a;
+}

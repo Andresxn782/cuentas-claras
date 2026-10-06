@@ -79,3 +79,40 @@ function rango_mes($mes) {
     $fin = date('Y-m-01', strtotime($inicio . ' +1 month'));
     return [$inicio, $fin];
 }
+// Devuelve los movimientos de un usuario, con filtros opcionales de mes y categoría
+function obtener_movimientos($pdo, $usuario_id, $mes, $categoria_id) {
+    $sql = 'SELECT m.id, m.fecha, m.importe, m.descripcion, c.nombre AS categoria, c.tipo
+            FROM movimientos m
+            JOIN categorias c ON m.categoria_id = c.id
+            WHERE m.usuario_id = ?';
+    $parametros = [$usuario_id];
+
+    if ($mes !== '') {
+        [$inicio_mes, $inicio_mes_siguiente] = rango_mes($mes);
+        $sql .= ' AND m.fecha >= ? AND m.fecha < ?';
+        $parametros[] = $inicio_mes;
+        $parametros[] = $inicio_mes_siguiente;
+    }
+
+    if ($categoria_id > 0) {
+        $sql .= ' AND m.categoria_id = ?';
+        $parametros[] = $categoria_id;
+    }
+
+    $sql .= ' ORDER BY m.fecha DESC, m.id DESC';
+
+    $consulta = $pdo->prepare($sql);
+    $consulta->execute($parametros);
+    return $consulta->fetchAll();
+}
+
+// Evita la inyección de fórmulas al abrir el CSV en Excel
+function limpiar_csv($texto) {
+    $texto = (string) $texto;
+
+    if ($texto !== '' && in_array($texto[0], ['=', '+', '-', '@', "\t", "\r"], true)) {
+        return "'" . $texto;
+    }
+
+    return $texto;
+}

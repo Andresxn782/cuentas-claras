@@ -4,39 +4,17 @@ require_once '../includes/funciones.php';
 
 requerir_login();
 
-// NUEVO: leer y validar los filtros de la URL
+// Leer y validar los filtros de la URL
 $mes = $_GET['mes'] ?? '';
 if ($mes !== '' && !mes_valido($mes)) {
     $mes = '';
 }
 $categoria_id = (int) ($_GET['categoria'] ?? 0);
 
-// NUEVO: construimos la consulta según los filtros elegidos
-$sql = 'SELECT m.id, m.fecha, m.importe, m.descripcion, c.nombre AS categoria, c.tipo
-        FROM movimientos m
-        JOIN categorias c ON m.categoria_id = c.id
-        WHERE m.usuario_id = ?';
-$parametros = [$_SESSION['usuario_id']];
+// NUEVO: la consulta ahora está en una función, para reutilizarla al exportar
+$movimientos = obtener_movimientos($pdo, $_SESSION['usuario_id'], $mes, $categoria_id);
 
-if ($mes !== '') {
-    [$inicio_mes, $inicio_mes_siguiente] = rango_mes($mes);
-    $sql .= ' AND m.fecha >= ? AND m.fecha < ?';
-    $parametros[] = $inicio_mes;
-    $parametros[] = $inicio_mes_siguiente;
-}
-
-if ($categoria_id > 0) {
-    $sql .= ' AND m.categoria_id = ?';
-    $parametros[] = $categoria_id;
-}
-
-$sql .= ' ORDER BY m.fecha DESC, m.id DESC';
-
-$consulta = $pdo->prepare($sql);
-$consulta->execute($parametros);
-$movimientos = $consulta->fetchAll();
-
-// NUEVO: datos para los desplegables de los filtros
+// Datos para los desplegables de los filtros
 $categorias = $pdo->query('SELECT id, nombre, tipo FROM categorias ORDER BY nombre')->fetchAll();
 
 $meses_disponibles = [];
@@ -46,13 +24,26 @@ for ($i = 0; $i < 12; $i++) {
 
 $hay_filtros = ($mes !== '' || $categoria_id > 0);
 
+// NUEVO: enlace de exportar con los mismos filtros que se están viendo
+$enlace_exportar = 'exportar.php?' . http_build_query([
+    'mes'       => $mes,
+    'categoria' => $categoria_id,
+]);
+
 $titulo = 'Movimientos';
 require '../includes/header.php';
 ?>
 
 <div class="cabecera-seccion">
     <h1>Movimientos</h1>
-    <a href="movimiento_form.php" class="boton">+ Nuevo movimiento</a>
+
+    <!-- NUEVO: botón de exportar junto al de nuevo movimiento -->
+    <div class="grupo-botones">
+        <?php if (!empty($movimientos)): ?>
+            <a href="<?php echo escapar($enlace_exportar); ?>" class="boton boton-secundario">Exportar CSV</a>
+        <?php endif; ?>
+        <a href="movimiento_form.php" class="boton">+ Nuevo movimiento</a>
+    </div>
 </div>
 
 <?php if (isset($_GET['creado'])): ?>
@@ -67,7 +58,6 @@ require '../includes/header.php';
     <div class="alerta alerta-exito">Movimiento borrado correctamente.</div>
 <?php endif; ?>
 
-<!-- NUEVO: formulario de filtros -->
 <form method="get" action="movimientos.php" class="filtros">
     <div>
         <label for="mes">Mes</label>
@@ -120,7 +110,6 @@ require '../includes/header.php';
 </form>
 
 <?php if (empty($movimientos)): ?>
-    <!-- NUEVO: mensaje distinto si no hay resultados por culpa de los filtros -->
     <?php if ($hay_filtros): ?>
         <p>No hay movimientos con estos filtros.</p>
     <?php else: ?>

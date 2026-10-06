@@ -344,3 +344,8 @@ body {
     grid-template-columns: 1fr;
   }
 }
+.grupo-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}

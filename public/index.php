@@ -83,57 +83,65 @@ require '../includes/header.php';
     </nav>
 </div>
 
-<div class="resumen">
-    <div class="resumen-tarjeta">
-        <p class="resumen-etiqueta">Ingresos</p>
-        <p class="resumen-cifra importe-ingreso"><?php echo formatear_euros($ingresos); ?></p>
+<!-- Parte de arriba: resumen a la izquierda y gráfica a la derecha -->
+<div class="panel-superior">
+    <div class="resumen">
+        <div class="resumen-tarjeta">
+            <p class="resumen-etiqueta">Ingresos</p>
+            <p class="resumen-cifra importe-ingreso"><?php echo formatear_euros($ingresos); ?></p>
+        </div>
+
+        <div class="resumen-tarjeta">
+            <p class="resumen-etiqueta">Gastos</p>
+            <p class="resumen-cifra importe-gasto"><?php echo formatear_euros($gastos); ?></p>
+        </div>
+
+        <div class="resumen-tarjeta">
+            <p class="resumen-etiqueta">Ahorro</p>
+            <?php if ($ahorro >= 0): ?>
+                <p class="resumen-cifra importe-ingreso"><?php echo formatear_euros($ahorro); ?></p>
+            <?php else: ?>
+                <p class="resumen-cifra importe-gasto"><?php echo formatear_euros($ahorro); ?></p>
+            <?php endif; ?>
+        </div>
     </div>
 
-    <div class="resumen-tarjeta">
-        <p class="resumen-etiqueta">Gastos</p>
-        <p class="resumen-cifra importe-gasto"><?php echo formatear_euros($gastos); ?></p>
-    </div>
+    <div class="tarjeta-grafica">
+        <h2>Distribución del gasto</h2>
 
-    <div class="resumen-tarjeta">
-        <p class="resumen-etiqueta">Ahorro</p>
-        <?php if ($ahorro >= 0): ?>
-            <p class="resumen-cifra importe-ingreso"><?php echo formatear_euros($ahorro); ?></p>
+        <?php if (empty($gastos_por_categoria)): ?>
+            <p>No hay gastos este mes.</p>
         <?php else: ?>
-            <p class="resumen-cifra importe-gasto"><?php echo formatear_euros($ahorro); ?></p>
+            <div class="grafica-contenedor">
+                <canvas id="grafica-gastos" data-grafica="<?php echo escapar($datos_grafica); ?>"></canvas>
+            </div>
         <?php endif; ?>
     </div>
 </div>
 
-<h2>Gastos por categoría</h2>
+<!-- Parte de abajo: la tabla con el detalle de los gastos -->
+<?php if (!empty($gastos_por_categoria)): ?>
+    <h2>Gastos por categoría</h2>
 
-<?php if (empty($gastos_por_categoria)): ?>
-    <p>No hay gastos este mes.</p>
-<?php else: ?>
-    <div class="gastos-categoria">
-        <div class="grafica-contenedor">
-            <canvas id="grafica-gastos" data-grafica="<?php echo escapar($datos_grafica); ?>"></canvas>
-        </div>
-
-        <div class="tabla-contenedor">
-            <table class="tabla">
-                <thead>
+    <div class="tabla-contenedor">
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th class="importe">Total</th>
+                    <th class="importe">% del gasto</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($gastos_por_categoria as $fila): ?>
                     <tr>
-                        <th>Categoría</th>
-                        <th class="importe">Total</th>
-                        <th class="importe">% del gasto</th>
+                        <td><?php echo escapar($fila['nombre']); ?></td>
+                        <td class="importe"><?php echo formatear_euros($fila['total']); ?></td>
+                        <td class="importe"><?php echo round($fila['total'] / $gastos * 100); ?> %</td>
                     </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($gastos_por_categoria as $fila): ?>
-                        <tr>
-                            <td><?php echo escapar($fila['nombre']); ?></td>
-                            <td class="importe"><?php echo formatear_euros($fila['total']); ?></td>
-                            <td class="importe"><?php echo round($fila['total'] / $gastos * 100); ?> %</td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>

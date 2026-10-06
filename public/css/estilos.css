@@ -1,3 +1,4 @@
+/* ===== Base ===== */
 * {
   box-sizing: border-box;
 }
@@ -9,6 +10,7 @@ body {
   color: #222;
 }
 
+/* ===== Cabecera y menú ===== */
 .cabecera {
   display: flex;
   justify-content: space-between;
@@ -32,6 +34,26 @@ body {
   margin-left: 15px;
 }
 
+.saludo {
+  color: #d4efe7;
+  margin-left: 15px;
+}
+
+.form-logout {
+  display: inline;
+  margin-left: 15px;
+}
+
+.boton-enlace {
+  background: none;
+  border: none;
+  padding: 0;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* ===== Contenedor principal y pie ===== */
 .contenedor {
   max-width: 1000px;
   margin: 0 auto;
@@ -43,6 +65,8 @@ body {
   padding: 20px;
   color: #777;
 }
+
+/* ===== Tarjetas y formularios ===== */
 .tarjeta {
   max-width: 450px;
   margin: 30px auto;
@@ -68,7 +92,9 @@ body {
   font-size: 1rem;
 }
 
+/* ===== Botones ===== */
 .boton {
+  display: inline-block;
   margin-top: 20px;
   padding: 10px 20px;
   background-color: #1e6f5c;
@@ -76,6 +102,7 @@ body {
   border: none;
   border-radius: 5px;
   font-size: 1rem;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -83,6 +110,24 @@ body {
   background-color: #155446;
 }
 
+.boton-secundario {
+  background-color: #e0e4e8;
+  color: #222;
+}
+
+.boton-secundario:hover {
+  background-color: #cfd4d9;
+}
+
+.boton-peligro {
+  background-color: #a12622;
+}
+
+.boton-peligro:hover {
+  background-color: #7f1d1a;
+}
+
+/* ===== Alertas ===== */
 .alerta {
   padding: 10px 15px;
   border-radius: 5px;
@@ -98,23 +143,8 @@ body {
   background-color: #e6f4ea;
   color: #1e6f3c;
 }
-.saludo {
-  color: #d4efe7;
-  margin-left: 15px;
-}
-.form-logout {
-  display: inline;
-  margin-left: 15px;
-}
 
-.boton-enlace {
-  background: none;
-  border: none;
-  padding: 0;
-  color: white;
-  font: inherit;
-  cursor: pointer;
-}
+/* ===== Cabecera de sección (título + botones) ===== */
 .cabecera-seccion {
   display: flex;
   justify-content: space-between;
@@ -125,9 +155,15 @@ body {
 
 .cabecera-seccion .boton {
   margin-top: 0;
-  text-decoration: none;
 }
 
+.navegacion-mes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ===== Tablas ===== */
 .tabla-contenedor {
   overflow-x: auto;
   background-color: white;
@@ -165,6 +201,7 @@ body {
   color: #a12622;
   font-weight: bold;
 }
+
 .acciones {
   display: flex;
   align-items: center;
@@ -184,79 +221,8 @@ body {
   text-decoration: underline;
   cursor: pointer;
 }
-.dialogo {
-  border: none;
-  border-radius: 8px;
-  padding: 25px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
 
-.dialogo::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
-.dialogo h2 {
-  margin-top: 0;
-}
-
-.dialogo-botones {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.dialogo-botones .boton {
-  margin-top: 0;
-}
-
-.boton-secundario {
-  background-color: #e0e4e8;
-  color: #222;
-}
-
-.boton-secundario:hover {
-  background-color: #cfd4d9;
-}
-
-.boton-peligro {
-  background-color: #a12622;
-}
-
-.boton-peligro:hover {
-  background-color: #7f1d1a;
-}
-.resumen {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin: 20px 0 30px;
-}
-
-.resumen-tarjeta {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.resumen-etiqueta {
-  margin: 0;
-  color: #777;
-}
-
-.resumen-cifra {
-  margin: 5px 0 0;
-  font-size: 1.6rem;
-}
-.navegacion-mes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
+/* ===== Filtros del listado ===== */
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -289,20 +255,92 @@ body {
 
 .filtros-botones .boton {
   margin-top: 0;
-  text-decoration: none;
 }
-.gastos-categoria {
+
+/* ===== Ventana de confirmación ===== */
+.dialogo {
+  border: none;
+  border-radius: 8px;
+  padding: 25px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.dialogo::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.dialogo h2 {
+  margin-top: 0;
+}
+
+.dialogo-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.dialogo-botones .boton {
+  margin-top: 0;
+}
+
+/* ===== Panel: resumen a la izquierda y gráfica a la derecha ===== */
+.panel-superior {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: 1fr 2fr;
   gap: 20px;
-  align-items: start;
+  margin: 20px 0 30px;
+}
+
+.resumen {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.resumen-tarjeta {
+  flex: 1;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resumen-etiqueta {
+  margin: 0;
+  color: #777;
+}
+
+.resumen-cifra {
+  margin: 5px 0 0;
+  font-size: 1.6rem;
+}
+
+.tarjeta-grafica {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tarjeta-grafica h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
 }
 
 .grafica-contenedor {
   position: relative;
-  height: 320px;
-  padding: 15px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  min-height: 280px;
+}
+
+/* ===== Pantallas estrechas (tablets y móviles) ===== */
+@media (max-width: 768px) {
+  .panel-superior {
+    grid-template-columns: 1fr;
+  }
 }

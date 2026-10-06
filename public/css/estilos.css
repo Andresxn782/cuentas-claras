@@ -291,3 +291,18 @@ body {
   margin-top: 0;
   text-decoration: none;
 }
+.gastos-categoria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  align-items: start;
+}
+
+.grafica-contenedor {
+  position: relative;
+  height: 320px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}

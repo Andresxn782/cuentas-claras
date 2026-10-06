@@ -51,6 +51,20 @@ $consulta = $pdo->prepare(
 $consulta->execute([$_SESSION['usuario_id'], $inicio_mes, $inicio_mes_siguiente]);
 $gastos_por_categoria = $consulta->fetchAll();
 
+// Datos para la gráfica: los nombres por un lado y los totales por otro
+$etiquetas = [];
+$valores = [];
+
+foreach ($gastos_por_categoria as $fila) {
+    $etiquetas[] = $fila['nombre'];
+    $valores[] = (float) $fila['total'];
+}
+
+$datos_grafica = json_encode([
+    'etiquetas' => $etiquetas,
+    'valores'   => $valores,
+]);
+
 $titulo = 'Panel';
 require '../includes/header.php';
 ?>
@@ -95,26 +109,35 @@ require '../includes/header.php';
 <?php if (empty($gastos_por_categoria)): ?>
     <p>No hay gastos este mes.</p>
 <?php else: ?>
-    <div class="tabla-contenedor">
-        <table class="tabla">
-            <thead>
-                <tr>
-                    <th>Categoría</th>
-                    <th class="importe">Total</th>
-                    <th class="importe">% del gasto</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($gastos_por_categoria as $fila): ?>
+    <div class="gastos-categoria">
+        <div class="grafica-contenedor">
+            <canvas id="grafica-gastos" data-grafica="<?php echo escapar($datos_grafica); ?>"></canvas>
+        </div>
+
+        <div class="tabla-contenedor">
+            <table class="tabla">
+                <thead>
                     <tr>
-                        <td><?php echo escapar($fila['nombre']); ?></td>
-                        <td class="importe"><?php echo formatear_euros($fila['total']); ?></td>
-                        <td class="importe"><?php echo round($fila['total'] / $gastos * 100); ?> %</td>
+                        <th>Categoría</th>
+                        <th class="importe">Total</th>
+                        <th class="importe">% del gasto</th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach ($gastos_por_categoria as $fila): ?>
+                        <tr>
+                            <td><?php echo escapar($fila['nombre']); ?></td>
+                            <td class="importe"><?php echo formatear_euros($fila['total']); ?></td>
+                            <td class="importe"><?php echo round($fila['total'] / $gastos * 100); ?> %</td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+    <script src="js/grafica.js"></script>
 <?php endif; ?>
 
 <p><a href="movimientos.php">Ver todos los movimientos</a></p>

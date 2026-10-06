@@ -210,6 +210,10 @@ body {
   background-color: #f0f2f4;
 }
 
+.tabla tbody tr:hover {
+  background-color: #f8faf9;
+}
+
 .tabla .importe {
   text-align: right;
 }
@@ -257,6 +261,10 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.filtros > div {
+  flex: 1 1 200px;
+}
+
 .filtros label {
   display: block;
   margin-bottom: 5px;
@@ -264,14 +272,16 @@ body {
 }
 
 .filtros select {
+  width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
 }
 
-.filtros-botones {
+.filtros .filtros-botones {
   display: flex;
+  flex: 0 0 auto;
   gap: 10px;
 }
 
@@ -360,6 +370,15 @@ body {
   min-height: 280px;
 }
 
+/* ===== Accesibilidad: foco visible al navegar con el teclado ===== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 3px solid #f2cc8f;
+  outline-offset: 2px;
+}
+
 /* ===== Pantallas estrechas (tablets y móviles) ===== */
 @media (max-width: 768px) {
   .panel-superior {
@@ -373,5 +392,22 @@ body {
 
   .saludo {
     width: 100%;
+  }
+
+  .contenedor {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .tarjeta {
+    margin: 15px auto;
+    padding: 20px;
+  }
+
+  .resumen-cifra {
+    font-size: 1.4rem;
   }
 }

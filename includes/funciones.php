@@ -1,8 +1,12 @@
 <?php
 // Configuración segura de la cookie de sesión
+// ¿Estamos usando HTTPS? (en el hosting, sí; en XAMPP, no)
+$usa_https = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+
 session_set_cookie_params([
     'httponly' => true,
     'samesite' => 'Lax',
+    'secure'   => $usa_https,
 ]);
 session_start();
 

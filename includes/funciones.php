@@ -67,3 +67,15 @@ function formatear_mes($fecha) {
 
     return $meses[$numero_mes] . ' de ' . date('Y', $marca);
 }
+// Comprueba que un texto es un mes válido con el formato "2026-10"
+function mes_valido($mes) {
+    $fecha = DateTime::createFromFormat('Y-m-d', $mes . '-01');
+    return $fecha && $fecha->format('Y-m') === $mes;
+}
+
+// Devuelve el primer día del mes y el primer día del mes siguiente
+function rango_mes($mes) {
+    $inicio = $mes . '-01';
+    $fin = date('Y-m-01', strtotime($inicio . ' +1 month'));
+    return [$inicio, $fin];
+}

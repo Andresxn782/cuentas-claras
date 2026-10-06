@@ -251,3 +251,43 @@ body {
   margin: 5px 0 0;
   font-size: 1.6rem;
 }
+.navegacion-mes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 15px;
+  margin: 20px 0;
+  padding: 15px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filtros label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.filtros select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.filtros-botones {
+  display: flex;
+  gap: 10px;
+}
+
+.filtros-botones .boton {
+  margin-top: 0;
+  text-decoration: none;
+}

@@ -4,9 +4,17 @@ require_once '../includes/funciones.php';
 
 requerir_login();
 
-// Rango de fechas del mes actual: desde el día 1 hasta el día 1 del mes siguiente
-$inicio_mes = date('Y-m-01');
-$inicio_mes_siguiente = date('Y-m-01', strtotime($inicio_mes . ' +1 month'));
+// Mes que se quiere ver (por defecto, el actual). Formato: "2026-10"
+$mes = $_GET['mes'] ?? date('Y-m');
+if (!mes_valido($mes)) {
+    $mes = date('Y-m');
+}
+
+[$inicio_mes, $inicio_mes_siguiente] = rango_mes($mes);
+
+// Para los botones de "Anterior" y "Siguiente"
+$mes_anterior  = date('Y-m', strtotime($inicio_mes . ' -1 month'));
+$mes_siguiente = date('Y-m', strtotime($inicio_mes . ' +1 month'));
 
 // 1. Total de ingresos y de gastos del mes
 $consulta = $pdo->prepare(
@@ -49,6 +57,16 @@ require '../includes/header.php';
 
 <div class="cabecera-seccion">
     <h1>Resumen de <?php echo formatear_mes($inicio_mes); ?></h1>
+
+    <nav class="navegacion-mes">
+        <a href="index.php?mes=<?php echo $mes_anterior; ?>" class="boton boton-secundario">&larr; Anterior</a>
+
+        <?php if ($mes !== date('Y-m')): ?>
+            <a href="index.php" class="boton boton-secundario">Mes actual</a>
+        <?php endif; ?>
+
+        <a href="index.php?mes=<?php echo $mes_siguiente; ?>" class="boton boton-secundario">Siguiente &rarr;</a>
+    </nav>
 </div>
 
 <div class="resumen">

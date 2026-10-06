@@ -54,3 +54,16 @@ function formatear_euros($cantidad) {
 function formatear_fecha($fecha) {
     return date('d/m/Y', strtotime($fecha));
 }
+// Convierte "2026-10-01" en "octubre de 2026"
+function formatear_mes($fecha) {
+    $meses = [
+        1 => 'enero', 2 => 'febrero', 3 => 'marzo', 4 => 'abril',
+        5 => 'mayo', 6 => 'junio', 7 => 'julio', 8 => 'agosto',
+        9 => 'septiembre', 10 => 'octubre', 11 => 'noviembre', 12 => 'diciembre',
+    ];
+
+    $marca = strtotime($fecha);
+    $numero_mes = (int) date('n', $marca);
+
+    return $meses[$numero_mes] . ' de ' . date('Y', $marca);
+}

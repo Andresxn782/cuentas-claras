@@ -228,3 +228,26 @@ body {
 .boton-peligro:hover {
   background-color: #7f1d1a;
 }
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin: 20px 0 30px;
+}
+
+.resumen-tarjeta {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resumen-etiqueta {
+  margin: 0;
+  color: #777;
+}
+
+.resumen-cifra {
+  margin: 5px 0 0;
+  font-size: 1.6rem;
+}
